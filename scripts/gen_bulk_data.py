@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -6,7 +5,7 @@ Gera CSVs para popular o esquema:
 tb_address, tb_card, tb_role, tb_congresso, tb_user, tb_user_role,
 tb_article, tb_articles_users, tb_evaluation, tb_review
 
-Alvo: ~1 GB total (ajuste fino em ARTICLE_BODY_KB).
+Alvo: ~1 GB total.
 Cria arquivos em ./out
 """
 
@@ -60,9 +59,11 @@ AUTHORITIES = ["ROLE_USER","ROLE_REVIEWER","ROLE_ADMIN"]
 ARTICLE_STATUS = ["PENDING","VALID","EXPIRED"]
 CONGRESS_MODALITY = ["ONLINE","IN_PERSON","HYBRID"]
 
+#garante a pasta de saída
 def ensure_outdir():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
+#escreve arquivos CSV com log a cada 100k linhas
 def write_csv(path: Path, header, rows_iter):
     with open(path, "w", newline='', encoding="utf-8") as f:
         w = csv.writer(f)
@@ -72,16 +73,17 @@ def write_csv(path: Path, header, rows_iter):
             if i % 100_000 == 0:
                 print(f"[{path.name}] {i:,} linhas geradas")
 
+#gera datas aleatórias realistas.
 def rand_dt_between(days_back=3650):
     now = datetime.utcnow()
     return now - timedelta(days=random.randint(0, days_back),
                            seconds=random.randint(0, 86400))
 
+#gera corpo de artigo com tamanho aproximado definido.
 def make_article_body(kb: float = 6.0) -> str:
     """
     Gera ~kb*1024 bytes de texto (aprox), repetindo um chunk.
-    Obs.: texto repetitivo comprime um pouco. Se quiser menos compressível,
-    troque por bytes pseudoaleatórios e encode em base64.
+    Obs.: texto repetitivo comprime um pouco. 
     """
     target_bytes = int(kb * 1024)
     chunk = ("lorem ipsum dolor sit amet consectetur adipiscing elit "

@@ -1,5 +1,7 @@
 \copy tb_address (id,city,complement,country,number,state,street,zip_code) FROM 'tb_address.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
 \copy tb_card (id,cvv,expired,number) FROM 'tb_card.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
+
 \copy tb_role (id,authority) FROM 'tb_role.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8');
 
 \copy tb_congresso (id,max_reviews_per_article,min_reviews_per_article,end_date,review_deadline,start_date,submission_deadline,congresso_modality,description,description_title,image_thumbnail,name,place) FROM 'tb_congresso.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8', FORCE_NULL (image_thumbnail));
